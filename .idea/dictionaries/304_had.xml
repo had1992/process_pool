@@ -1,0 +1,11 @@
+<component name="ProjectDictionaryState">
+  <dictionary name="304-had">
+    <words>
+      <w>epoll</w>
+      <w>epollfd</w>
+      <w>listenfd</w>
+      <w>pipefd</w>
+      <w>processpool</w>
+    </words>
+  </dictionary>
+</component>
