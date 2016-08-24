@@ -309,26 +309,26 @@ void processpool< T >::run_parent()
             int sockfd = events[i].data.fd;
             if( sockfd == m_listenfd ) //监听到新连接到来，论选出一个子进程，通知该子进程”嘿，有新的连接到了，你接受下！“
             {
-                int i =  sub_process_counter;
+                int j =  sub_process_counter;
                 do
                 {
-                    if( m_sub_process[i].m_pid != -1 )
+                    if( m_sub_process[j].m_pid != -1 )
                     {
                         break;
                     }
-                    i = (i+1)%m_process_number;
+                    j = (j+1)%m_process_number;
                 }
-                while( i != sub_process_counter );
+                while( j != sub_process_counter );
 
-                if( m_sub_process[i].m_pid == -1 )//所有子进程都都已经推出
+                if( m_sub_process[j].m_pid == -1 )//所有子进程都都已经推出
                 {
                     m_stop = true;
                     break;
                 }
-                sub_process_counter = (i+1)%m_process_number;
+                sub_process_counter = (j+1)%m_process_number;
                 //send( m_sub_process[sub_process_counter++].m_pipefd[0], ( char* )&new_conn, sizeof( new_conn ), 0 );
-                send( m_sub_process[i].m_pipefd[0], ( char* )&new_conn, sizeof( new_conn ), 0 );//通知子进程
-                std::cout << "send request to child" << i << std::endl;
+                send( m_sub_process[j].m_pipefd[0], ( char* )&new_conn, sizeof( new_conn ), 0 );//通知子进程
+                std::cout << "send request to child" << j << std::endl;
                 //sub_process_counter %= m_process_number;
             }
             else if( ( sockfd == sig_pipefd[0] ) && ( events[i].events & EPOLLIN ) )
